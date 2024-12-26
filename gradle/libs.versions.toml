@@ -1,0 +1,35 @@
+[versions]
+agp = "8.2.2"
+android-compileSdk = "34"
+android-minSdk = "23"
+android-targetSdk = "34"
+androidx-core = "1.13.0"
+androidx-activityCompose = "1.9.3"
+androidx-lifecycle = "2.8.0"
+compose-plugin = "1.6.11"
+kotlin = "2.0.21"
+okio = "3.9.0"
+ktor = "2.3.11"
+qrCode = "3.3.0"
+skie = "0.9.3"
+drawable-painter = "0.36.0"
+maven-deployer = "0.16.0"
+
+[plugins]
+androidApplication = { id = "com.android.application", version.ref = "agp" }
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
+jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+skie = { id = "co.touchlab.skie", version.ref = "skie" }
+mavenDeployer = { id = "io.deepmedia.tools.deployer", version.ref = "maven-deployer"}
+
+[libraries]
+androidx-core = { group = "androidx.core", name = "core", version.ref = "androidx-core" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
+androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
+okio = { group = "com.squareup.okio", name = "okio", version.ref = "okio" }
+ktor-http = { group = "io.ktor", name = "ktor-http", version.ref = "ktor" }
+qr-code = { group = "io.github.g0dkar", name = "qrcode-kotlin", version.ref = "qrCode" }
+drawable-painter = { group = "com.google.accompanist", name = "accompanist-drawablepainter", version.ref = "drawable-painter" }

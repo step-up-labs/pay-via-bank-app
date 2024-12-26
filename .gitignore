@@ -1,0 +1,15 @@
+# local
+
+.DS_Store
+local.properties
+*.hprof
+*.swp
+
+# generated
+
+.idea
+.vscode
+.gradle
+.kotlin
+.swiftpm
+build/
