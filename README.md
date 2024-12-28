@@ -11,7 +11,7 @@ TODO @c4t-dr34m
 
 ## Bank support
 
-Currently, we support only banks that accept the [SPAYD format](https://en.wikipedia.org/wiki/Short_Payment_Descriptor), known as "QR payment" in the Czech Republic. The list of tested bank apps can be found [here](shared/src/androidMain/kotlin/io/stepuplabs/pvba/SpaydBankAppPaymentResolver.android.kt#L191).
+Currently, we support only banks that accept the [SPAYD format](https://en.wikipedia.org/wiki/Short_Payment_Descriptor), known as "QR payment" in the Czech Republic. The list of tested bank apps can be found [here](shared/src/androidMain/kotlin/io/stepuplabs/pvba/SpaydBankAppPaymentResolver.android.kt#L191). We welcome pull requests about new bank support. Or open an issue if you found something about supported bank.
 
 ## Integration
 
@@ -38,7 +38,7 @@ where:
 payViaBankAppResolver.isPayViaBankAppSupported()
 ```
 
-It's recommended to hide the feature if it's not supported.
+This is `false` if the user doesn't have any supported bank app installed. It's recommended to hide the feature.
 
 #### Showing supported bank app icon
 
@@ -80,12 +80,12 @@ Add a new entry into `dependencies`: `.package(url: "https://github.com/stepupla
 Where appropriate, create an instance of `SpaydPayViaBankAppResolver` and call `.payViaBankApp()` on it.
 
 ```swift
-SpaydPayViaBankAppResolver().payViaBankApp(spayd: spayd)
+SpaydPayViaBankAppResolver().payViaBankApp(spayd: spayd, navParams: NavigationParameters)
 ```
 
 where:
 - `spayd` is a string containing the payment information in the [SPAYD format](https://en.wikipedia.org/wiki/Short_Payment_Descriptor). We recommend [our library](https://github.com/step-up-labs/spayd-kmp) for generating SPAYD on iOS.
-- `navigationParams` is a new instance of `NavigationParameters()`.
+- `navParams` is a new instance of `NavigationParameters()`. iOS doesn't need it, it's there just for compatibility with Android.
 
 ## How does it work?
 
@@ -93,10 +93,10 @@ where:
 On Android, the library uses intent APIs. Some bank apps can be opened directly with an intent containing the SPAYD string. Other bank apps accept images with a QR code containing SPAYD. If there is just one supported app, the QR code is not visible to the user and the bank app is opened directly. If the user has multiple supported bank apps, the system dialog is shown. The QR code is visible there and the user has to select their preferred bank app.
 
 ### iOS
-On iOS, the library generates the QR code and opens a sheet to share the QR code to another app. The user can then pick the bank app that can decode the QR code and pre-fill a payment order. If the bank app does not support sharing images, the user can save the generated QR code in their photo library and open it within the bank app for the same purpose.
+On iOS, the library generates the QR code and opens a sheet to share the QR code to another app. The user can then pick the bank app that can decode the QR code and pre-fill a payment order. If the bank app does not support sharing images, the user can save the generated QR code in their photo library and open it within the bank app for the same purpose. Bank app icons is not supported on iOS due to system limitation.
 
 
-## For bank apps: How to support this library?
+## For bank apps: how to support this library?
 
 ### Android
 It's preferred to accept Intent with SPAYD payload:

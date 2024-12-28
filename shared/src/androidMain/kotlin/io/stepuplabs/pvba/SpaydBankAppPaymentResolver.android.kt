@@ -189,16 +189,16 @@ actual class SpaydPayViaBankAppResolver(
 
     companion object {
         val DEFAULT_BANK_APP_PACKAGES = listOf(
-            "cz.rb.app.smartphonebanking",
-            "eu.inmite.prj.kb.mobilbank",
-            "cz.kb.ndb",
-            "cz.csas.georgego",
-            "cz.csob.smart",
-            "cz.moneta.smartbanka",
-            "cz.fio.sb2",
-            "cz.airbank.android",
-            "cz.creditas.richee",
-            "cz.pbktechnology.partners.client"
+            "cz.rb.app.smartphonebanking", // Raiffeisenbank
+            "eu.inmite.prj.kb.mobilbank", // Komerční banka (old app)
+            "cz.kb.ndb", // Komerční banka (new app)
+            "cz.csas.georgego", // Česká spořitelna (George)
+            "cz.csob.smart", // ČSOB
+            "cz.moneta.smartbanka", // Moneta
+            "cz.fio.sb2", // Fio banka
+            "cz.airbank.android", // Air Bank
+            "cz.creditas.richee", // Banka CREDITAS
+            "cz.pbktechnology.partners.client" // Partners Banka
         )
         private const val DIR = "qr"
         private const val FILE = "transfer-payment-qr.png"
