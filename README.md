@@ -95,6 +95,26 @@ On Android, the library uses intent APIs. Some bank apps can be opened directly 
 ### iOS
 On iOS, the library generates the QR code and opens a sheet to share the QR code to another app. The user can then pick the bank app that can decode the QR code and pre-fill a payment order. If the bank app does not support sharing images, the user can save the generated QR code in their photo library and open it within the bank app for the same purpose.
 
+
+## For bank apps: How to support this library?
+
+### Android
+It's preferred to accept Intent with SPAYD payload:
+
+```xml
+<receiver android:name=".YourSpaydReceiver" android:exported="true">
+  <intent-filter>
+    <action android:name="android.intent.action.VIEW" />
+    <data android:mimeType="application/x-shortpaymentdescriptor" />
+  </intent-filter>
+</receiver>
+```
+
+In your receiver, get SPAYD payload via `intent.getStringExtra("spayd")`.
+
+### iOS
+Support accepting an image with QR code containing SPAYD.
+
 ## Future plans & contributing
 
 We would like to add support to more banks and markets, such as banks supporting the [EPC code format](https://en.wikipedia.org/wiki/EPC_QR_code).
