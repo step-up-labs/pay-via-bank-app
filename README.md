@@ -80,12 +80,11 @@ Add a new entry into `dependencies`: `.package(url: "https://github.com/stepupla
 Where appropriate, create an instance of `SpaydPayViaBankAppResolver` and call `.payViaBankApp()` on it.
 
 ```swift
-SpaydPayViaBankAppResolver().payViaBankApp(spayd: spayd, navParams: NavigationParameters)
+SpaydPayViaBankAppResolver().payViaBankApp(spayd: spayd)
 ```
 
 where:
 - `spayd` is a string containing the payment information in the [SPAYD format](https://en.wikipedia.org/wiki/Short_Payment_Descriptor). We recommend [our library](https://github.com/step-up-labs/spayd-kmp) for generating SPAYD on iOS.
-- `navParams` is a new instance of `NavigationParameters()`. iOS doesn't need it, it's there just for compatibility with Android.
 
 ## How does it work?
 
