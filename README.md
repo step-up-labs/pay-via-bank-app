@@ -10,7 +10,7 @@ The library was created with a significant contribution from Alza.cz a.s. It's a
 
 ## Bank support
 
-Currently, we support only banks that accept the [SPAYD format](https://en.wikipedia.org/wiki/Short_Payment_Descriptor), known as "QR payment" in the Czech Republic. The list of tested bank apps can be found [here](shared/src/androidMain/kotlin/io/stepuplabs/pvba/SpaydBankAppPaymentResolver.android.kt#L191). We welcome pull requests about new bank support. Or open an issue if you found something about supported bank.
+Currently, we support only banks that accept the [SPAYD format](https://en.wikipedia.org/wiki/Short_Payment_Descriptor), known as "QR payment" in the Czech Republic. The list of tested bank apps can be found [here](shared/src/androidMain/kotlin/io/stepuplabs/pvba/SpaydBankAppPaymentResolver.android.kt#L195). We welcome pull requests about new bank support. Or open an issue if you found something about supported bank.
 
 ## Integration
 
