@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557BA273AAA24004C7B11 /* Assets.xcassets */; };
 		058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */; };
+		08B321602D2EE0910034ACDD /* PayViaBankApp in Frameworks */ = {isa = PBXBuildFile; productRef = 08B3215F2D2EE0910034ACDD /* PayViaBankApp */; };
 		2152FB042600AC8F00CF470E /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* Application.swift */; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
 /* End PBXBuildFile section */
@@ -28,6 +29,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08B321602D2EE0910034ACDD /* PayViaBankApp in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -113,6 +115,7 @@
 			);
 			name = iosApp;
 			packageProductDependencies = (
+				08B3215F2D2EE0910034ACDD /* PayViaBankApp */,
 			);
 			productName = iosApp;
 			productReference = 7555FF7B242A565900829871 /* "Pay via Bank App".app */;
@@ -144,6 +147,7 @@
 			);
 			mainGroup = 7555FF72242A565900829871;
 			packageReferences = (
+				08B3215E2D2EE0910034ACDD /* XCRemoteSwiftPackageReference "pay-via-bank-app-spm" */,
 			);
 			productRefGroup = 7555FF7C242A565900829871 /* Products */;
 			projectDirPath = "";
@@ -328,7 +332,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
-				DEVELOPMENT_TEAM = "${TEAM_ID}";
+				DEVELOPMENT_TEAM = JF7M27MR67;
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -359,7 +363,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
-				DEVELOPMENT_TEAM = "${TEAM_ID}";
+				DEVELOPMENT_TEAM = JF7M27MR67;
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -404,6 +408,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		08B3215E2D2EE0910034ACDD /* XCRemoteSwiftPackageReference "pay-via-bank-app-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/step-up-labs/pay-via-bank-app-spm";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.13.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		08B3215F2D2EE0910034ACDD /* PayViaBankApp */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 08B3215E2D2EE0910034ACDD /* XCRemoteSwiftPackageReference "pay-via-bank-app-spm" */;
+			productName = PayViaBankApp;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 7555FF73242A565900829871 /* Project object */;
 }

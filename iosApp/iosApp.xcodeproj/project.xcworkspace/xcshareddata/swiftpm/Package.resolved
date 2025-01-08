@@ -1,0 +1,15 @@
+{
+  "originHash" : "57eb09f04601cc988c19a1c5d46b673459c451da9f2f10a17469d6d22e4f995d",
+  "pins" : [
+    {
+      "identity" : "pay-via-bank-app-spm",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/step-up-labs/pay-via-bank-app-spm",
+      "state" : {
+        "revision" : "5c28fa9ce115e2e538d05bfe67d6f92a2f276c4e",
+        "version" : "0.13.0"
+      }
+    }
+  ],
+  "version" : 3
+}
