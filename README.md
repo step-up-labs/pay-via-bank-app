@@ -6,8 +6,7 @@ The library was created with a significant contribution from Alza.cz a.s. It's a
 
 ## Screenshots
 
-<img src="doc/android_screenshot_1.png" width="200" /> <img src="doc/android_screenshot_2.png" width="200" />
-TODO @c4t-dr34m
+<img src="doc/android_screenshot_1.png" width="200" /> <img src="doc/android_screenshot_2.png" width="200" /><img src="doc/ios_screenshot_1.png" width="200" /> <img src="doc/ios_screenshot_2.png" width="200" />
 
 ## Bank support
 
