@@ -1,4 +1,4 @@
-import shared
+import pvba
 import SwiftUI
 
 struct ContentView: View {
@@ -24,10 +24,7 @@ struct ContentView: View {
 				.padding()
 
 			Button(action: {
-				resolver.payViaBankApp(
-					spayd: spayd,
-					navigationParams: NavigationParameters()
-				)
+				resolver.payViaBankApp(spayd: spayd, navigationParams: NavigationParameters())
 			}) {
 				Label("Pay via bank app", systemImage: "banknote")
 					.font(.system(.body))

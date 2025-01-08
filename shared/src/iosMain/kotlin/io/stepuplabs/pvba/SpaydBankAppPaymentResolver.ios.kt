@@ -31,7 +31,7 @@ actual class SpaydPayViaBankAppResolver {
      * Opens a supported bank app with a payment flow or shows a chooser with multiple apps.
      */
     @OptIn(ExperimentalForeignApi::class)
-    actual fun payViaBankApp(spayd: String, navigationParams: NavigationParameters): Result<Unit> {
+    actual fun payViaBankApp(spayd: String, navigationParams: NavigationParameters?): Result<Unit> {
         val qrCode = generateQRCode(spayd as NSString)
         val activityItems = listOf(generateActivityItems(qrCode = qrCode))
         val activityViewController = UIActivityViewController(

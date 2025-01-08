@@ -53,8 +53,12 @@ actual class SpaydPayViaBankAppResolver(
      */
     actual fun payViaBankApp(
         spayd: String,
-        navigationParams: NavigationParameters
+        navigationParams: NavigationParameters?
     ): Result<Unit> {
+        if (navigationParams == null) {
+            return Result.failure(Exception("Navigation Parameters has to be specified."))
+        }
+
         val spaydReceivers = getSpaydReceivers()
         val imageReceivers = getImageReceivers()
 

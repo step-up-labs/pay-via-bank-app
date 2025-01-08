@@ -6,8 +6,7 @@ The library was created with a significant contribution from Alza.cz a.s. It's a
 
 ## Screenshots
 
-<img src="doc/android_screenshot_1.png" width="200" /> <img src="doc/android_screenshot_2.png" width="200" />
-TODO @c4t-dr34m
+<img src="doc/android_screenshot_1.png" width="200" /> <img src="doc/android_screenshot_2.png" width="200" /><img src="doc/ios_screenshot_1.png" width="200" /> <img src="doc/ios_screenshot_2.png" width="200" />
 
 ## Bank support
 
@@ -80,12 +79,11 @@ Add a new entry into `dependencies`: `.package(url: "https://github.com/stepupla
 Where appropriate, create an instance of `SpaydPayViaBankAppResolver` and call `.payViaBankApp()` on it.
 
 ```swift
-SpaydPayViaBankAppResolver().payViaBankApp(spayd: spayd, navParams: NavigationParameters)
+SpaydPayViaBankAppResolver().payViaBankApp(spayd: spayd)
 ```
 
 where:
 - `spayd` is a string containing the payment information in the [SPAYD format](https://en.wikipedia.org/wiki/Short_Payment_Descriptor). We recommend [our library](https://github.com/step-up-labs/spayd-kmp) for generating SPAYD on iOS.
-- `navParams` is a new instance of `NavigationParameters()`. iOS doesn't need it, it's there just for compatibility with Android.
 
 ## How does it work?
 

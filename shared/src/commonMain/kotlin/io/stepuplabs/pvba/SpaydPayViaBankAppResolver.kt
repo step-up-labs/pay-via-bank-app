@@ -14,7 +14,7 @@ expect class SpaydPayViaBankAppResolver {
     /**
      * Opens a supported bank app with a payment flow or shows a chooser with multiple apps.
      */
-    fun payViaBankApp(spayd: String, navigationParams: NavigationParameters): Result<Unit>
+    fun payViaBankApp(spayd: String, navigationParams: NavigationParameters? = null): Result<Unit>
 }
 
 /**
