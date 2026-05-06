@@ -6,16 +6,17 @@ import android.app.Activity
 import android.app.Application
 import android.content.ClipData
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import androidx.core.content.FileProvider
-import io.github.g0dkar.qrcode.QRCode
 import io.ktor.http.Url
 import okio.FileSystem
 import okio.Path
 import okio.Path.Companion.toPath
 import okio.buffer
+import qrcode.QRCode
 import java.lang.ref.WeakReference
 
 /**
@@ -173,9 +174,7 @@ actual class SpaydPayViaBankAppResolver(
 
             FileSystem.SYSTEM.sink(path).use {
                 val outputStream = it.buffer().outputStream()
-                QRCode(spayd)
-                    .render(30, 30)
-                    .writeImage(outputStream)
+                QRCode.ofSquares().withSize(30).withBackgroundColor(Color.WHITE).build(spayd).render().writeImage(outputStream)
                 outputStream.flush()
             }
 
@@ -218,9 +217,9 @@ actual class NavigationParameters(val activityReference: WeakReference<Activity>
 /**
  * This exception is returned when there is unexpected error when opening bank app Activity.
  */
-class BankAppOpeningException(override val cause: Throwable?): Exception()
+class BankAppOpeningException(override val cause: Throwable?) : Exception()
 
 /**
  * This exception is returned when there is unexpected error when creating a file for transfer QR code.
  */
-class QrCodeFileException(override val cause: Throwable?): Exception()
+class QrCodeFileException(override val cause: Throwable?) : Exception()
