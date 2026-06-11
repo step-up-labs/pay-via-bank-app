@@ -35,17 +35,18 @@ actual class SpaydPayViaBankAppResolver(
     }
 
     /**
-     * When there is just one bank app supporting bank app payment, this returns the icon of that bank app.
+     * Shows a list of supported bank apps. You can build a bank app chooser inside your app.
+     * Or show just one on a button without a chooser.
      */
-    fun getSupportedBankAppIcon(): Drawable? {
-        val spaydReceivers = getSpaydReceivers()
-        val imageReceivers = getImageReceivers()
-        return if (spaydReceivers.size == 1 && imageReceivers.isEmpty()) {
-            application.packageManager.getApplicationIcon(spaydReceivers.first())
-        } else if (imageReceivers.size == 1 && spaydReceivers.isEmpty()) {
-            application.packageManager.getApplicationIcon(imageReceivers.first())
-        } else {
-            null
+    fun getSupportedBankApps(): List<SupportedBankApp> {
+        return (getSpaydReceivers() + getImageReceivers()).distinct().map {
+            SupportedBankApp(
+                it,
+                application.packageManager.getApplicationIcon(it),
+                application.packageManager.getApplicationLabel(
+                    application.packageManager.getApplicationInfo(it, 0)
+                ).toString()
+            )
         }
     }
 
@@ -94,8 +95,19 @@ actual class SpaydPayViaBankAppResolver(
             }
         }
 
+        val selectedIntent = if (navigationParams.selectedPackageName != null) {
+            spaydIntents().find { it.`package` == navigationParams.selectedPackageName }
+                ?: imageIntents(generateQrCodeUri(spayd)).find { it.`package` == navigationParams.selectedPackageName }
+        } else {
+            null
+        }
+
         try {
             when {
+                // bank is selected in a chooser, open it
+                selectedIntent != null -> {
+                    navigationParams.activityReference.get()?.startActivity(selectedIntent)
+                }
                 // only one spayd receiver, open straight away
                 spaydReceivers.size == 1 && imageReceivers.isEmpty() -> {
                     navigationParams.activityReference.get()?.startActivity(spaydIntents().first())
@@ -170,11 +182,13 @@ actual class SpaydPayViaBankAppResolver(
                 FileSystem.SYSTEM.createDirectories(dir)
             }
 
-            val path = "$dir${Path.DIRECTORY_SEPARATOR}$FILE".toPath(normalize = true)
+            val path =
+                "$dir${Path.DIRECTORY_SEPARATOR}${AnnotationTarget.FILE}".toPath(normalize = true)
 
             FileSystem.SYSTEM.sink(path).use {
                 val outputStream = it.buffer().outputStream()
-                QRCode.ofSquares().withSize(30).withBackgroundColor(Color.WHITE).build(spayd).render().writeImage(outputStream)
+                QRCode.ofSquares().withSize(30).withBackgroundColor(Color.WHITE).build(spayd)
+                    .render().writeImage(outputStream)
                 outputStream.flush()
             }
 
@@ -191,28 +205,26 @@ actual class SpaydPayViaBankAppResolver(
     }
 
     companion object {
-        val DEFAULT_BANK_APP_PACKAGES = listOf(
-            "cz.rb.app.smartphonebanking", // Raiffeisenbank
-            "eu.inmite.prj.kb.mobilbank", // Komerční banka (old app)
-            "cz.kb.ndb", // Komerční banka (new app)
-            "cz.csas.georgego", // Česká spořitelna (George)
-            "cz.csob.smart", // ČSOB
-            "cz.moneta.smartbanka", // Moneta
-            "cz.fio.sb2", // Fio banka
-            "cz.airbank.android", // Air Bank
-            "cz.creditas.richee", // Banka CREDITAS
-            "cz.pbktechnology.partners.client" // Partners Banka
-        )
         private const val DIR = "qr"
-        private const val FILE = "transfer-payment-qr.png"
     }
 
 }
 
 /**
  * This class should contain any platform-specific parameters which the system needs to launch navigation to the bank app or show a chooser.
+ *
+ * @param activityReference Weak reference to activity to avoid memory leaks
+ * @param selectedPackageName If using bank chooser, set a package name of the selected bank
  */
-actual class NavigationParameters(val activityReference: WeakReference<Activity>)
+actual class NavigationParameters(
+    val activityReference: WeakReference<Activity>,
+    val selectedPackageName: String? = null
+)
+
+/**
+ * Information about supported bank app. Can be used in a bank app chooser.
+ */
+data class SupportedBankApp(val packageName: String, val icon: Drawable, val name: String)
 
 /**
  * This exception is returned when there is unexpected error when opening bank app Activity.

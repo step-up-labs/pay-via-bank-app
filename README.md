@@ -10,7 +10,7 @@ The library was created with a significant contribution from Alza.cz a.s. It's a
 
 ## Bank support
 
-Currently, we support only banks that accept the [SPAYD format](https://en.wikipedia.org/wiki/Short_Payment_Descriptor), known as "QR payment" in the Czech Republic. The list of tested bank apps can be found [here](shared/src/androidMain/kotlin/io/stepuplabs/pvba/SpaydBankAppPaymentResolver.android.kt#L195). We welcome pull requests about new bank support. Or open an issue if you found something about supported bank.
+Currently, we support only banks that accept the [SPAYD format](https://en.wikipedia.org/wiki/Short_Payment_Descriptor), known as "QR payment" in the Czech Republic. The list of tested bank apps can be found [here](shared/src/androidMain/kotlin/io/stepuplabs/pvba/DefaultBankAppPackages.kt). We welcome pull requests about new bank support. Or open an issue if you found something about supported bank.
 
 ## Integration
 
@@ -29,7 +29,7 @@ val payViaBankAppResolver = SpaydPayViaBankAppResolver(application, fileProvider
 where:
 - `application` is the Application context
 - `fileProviderAuthority` is the authority of your [file provider](https://developer.android.com/reference/androidx/core/content/FileProvider). If your app doesn't have one, create one similar to the [sample app](androidApp/src/androidMain).
-- `bankAppPackages` is the list of supported bank app package names. It uses [this list](shared/src/androidMain/kotlin/io/stepuplabs/pvba/SpaydBankAppPaymentResolver.android.kt#L191) as default, but it's optional. However, it's recommended to pass this list dynamically via some service like Firebase Remote Config. This way, you can turn the support on/off for a specific bank without updating the app.
+- `bankAppPackages` is the list of supported bank app package names. It uses [this list](shared/src/androidMain/kotlin/io/stepuplabs/pvba/DefaultBankAppPackages.kt) as default, but it's optional. However, it's recommended to pass this list dynamically via some service like Firebase Remote Config. This way, you can turn the support on/off for a specific bank without updating the app.
 
 #### Checking device support
 
@@ -39,15 +39,15 @@ payViaBankAppResolver.isPayViaBankAppSupported()
 
 This is `false` if the user doesn't have any supported bank app installed. It's recommended to hide the feature.
 
-#### Showing supported bank app icon
+#### Showing bank app button
 
-You can get the icon of a supported bank app by calling:
+You can get the list of supported bank apps by calling:
 
 ```kotlin
-payViaBankAppResolver.getSupportedBankAppIcon()
+payViaBankAppResolver.getSupportedBankApps()
 ```
 
-It's recommended to show this icon on the payment button to improve UX. If this method returns null, show some fallback icon or no icon at all.
+It's recommended to show this icon and name of the bank app on the payment button. If there are multiple supported bank apps, it's recommended to show the first one on the button but allow user to change bank app. It's recommended to have own bank app chooser instead of relying on system intent chooser.
 
 #### Initiating payment flow
 
@@ -57,7 +57,9 @@ val result = payViaBankAppResolver.payViaBankApp(spayd, navigationParams)
 
 where:
 - `spayd` is the string containing the payment information in a [SPAYD format](https://en.wikipedia.org/wiki/Short_Payment_Descriptor). We recommend [our library](https://github.com/step-up-labs/spayd-kmp) for generating SPAYD on Android,
-- `navigationParams` should contain a [WeakReference](https://developer.android.com/reference/java/lang/ref/WeakReference) of your Activity to avoid memory leaks,
+- `navigationParams` should contain:
+  - `activityReference`: a [WeakReference](https://developer.android.com/reference/java/lang/ref/WeakReference) of your Activity to avoid memory leaks.
+  - `selectedPackageName`: an optional selected package name of the bank app. If you don't pass it, the system chooser is shown.
 - `result` is a [Result class](https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-result/). If it's successful, the bank app has been successfully opened. Failure could be caused by two exceptions:
   - `BankAppOpeningException` is a problem with opening the bank app's Activity. You can get more details in the Exceptions' `cause`.
   - `QrCodeFileException` is a problem with providing the file via a file provider. It's likely caused by a bad file provider configuration. You can get more details in the Exceptions' `cause`.
