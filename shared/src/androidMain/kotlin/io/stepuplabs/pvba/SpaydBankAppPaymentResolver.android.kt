@@ -182,8 +182,7 @@ actual class SpaydPayViaBankAppResolver(
                 FileSystem.SYSTEM.createDirectories(dir)
             }
 
-            val path =
-                "$dir${Path.DIRECTORY_SEPARATOR}${AnnotationTarget.FILE}".toPath(normalize = true)
+            val path = "$dir${Path.DIRECTORY_SEPARATOR}$FILE".toPath(normalize = true)
 
             FileSystem.SYSTEM.sink(path).use {
                 val outputStream = it.buffer().outputStream()
@@ -206,6 +205,7 @@ actual class SpaydPayViaBankAppResolver(
 
     companion object {
         private const val DIR = "qr"
+        private const val FILE = "transfer-payment-qr.png"
     }
 
 }

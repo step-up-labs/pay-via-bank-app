@@ -39,7 +39,7 @@ payViaBankAppResolver.isPayViaBankAppSupported()
 
 This is `false` if the user doesn't have any supported bank app installed. It's recommended to hide the feature.
 
-#### Showing bank app button
+#### Showing payment button
 
 You can get the list of supported bank apps by calling:
 
@@ -47,7 +47,7 @@ You can get the list of supported bank apps by calling:
 payViaBankAppResolver.getSupportedBankApps()
 ```
 
-It's recommended to show this icon and name of the bank app on the payment button. If there are multiple supported bank apps, it's recommended to show the first one on the button but allow user to change bank app. It's recommended to have own bank app chooser instead of relying on system intent chooser.
+It's recommended to show icon and name of the bank app on the payment button. If there are multiple supported bank apps, it's recommended to show the first one on the button but allow user to change bank app. It's recommended to have own bank app chooser instead of relying on system intent chooser.
 
 #### Initiating payment flow
 
