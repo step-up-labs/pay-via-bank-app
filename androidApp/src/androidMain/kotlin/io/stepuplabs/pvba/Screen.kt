@@ -2,6 +2,7 @@ package io.stepuplabs.pvba
 
 import android.app.Activity
 import android.widget.Toast
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,11 +11,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -47,35 +52,87 @@ fun Screen(payViaBankAppResolver: SpaydPayViaBankAppResolver) {
                         label = { Text("SPAYD") },
                         modifier = Modifier.padding(16.dp)
                     )
+                    val supportedBankApps =
+                        remember { payViaBankAppResolver.getSupportedBankApps() }
+                    var selectedBankApp by remember { mutableStateOf(supportedBankApps.first()) }
+
                     OutlinedButton(onClick = {
                         val result = payViaBankAppResolver.payViaBankApp(
                             spayd,
-                            NavigationParameters(WeakReference(context as Activity))
+                            NavigationParameters(
+                                WeakReference(context as Activity),
+                                selectedBankApp.packageName
+                            ),
                         )
                         if (result.isSuccess) {
-                            Toast.makeText(context, "Bank app opened successfully", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                context,
+                                "Bank app opened successfully",
+                                Toast.LENGTH_LONG
+                            ).show()
                         } else {
                             when {
                                 result.exceptionOrNull() is BankAppOpeningException -> {
-                                    Toast.makeText(context, "Error when opening bank app", Toast.LENGTH_LONG).show()
+                                    Toast.makeText(
+                                        context,
+                                        "Error when opening bank app",
+                                        Toast.LENGTH_LONG
+                                    ).show()
                                 }
+
                                 result.exceptionOrNull() is QrCodeFileException -> {
-                                    Toast.makeText(context, "Error when creating QR code file", Toast.LENGTH_LONG).show()
+                                    Toast.makeText(
+                                        context,
+                                        "Error when creating QR code file",
+                                        Toast.LENGTH_LONG
+                                    ).show()
                                 }
                             }
                         }
                     }) {
-                        val bankAppIcon = payViaBankAppResolver.getSupportedBankAppIcon()
-                        if (bankAppIcon != null) {
-                            Icon(
-                                painter = rememberDrawablePainter(bankAppIcon),
-                                contentDescription = null,
-                                modifier = Modifier.size(ButtonDefaults.IconSize),
-                                tint = Color.Unspecified
-                            )
-                            Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
+                        Icon(
+                            painter = rememberDrawablePainter(selectedBankApp.icon),
+                            contentDescription = null,
+                            modifier = Modifier.size(ButtonDefaults.IconSize),
+                            tint = Color.Unspecified
+                        )
+                        Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
+                        Text("Pay via " + selectedBankApp.name)
+                    }
+
+                    if (supportedBankApps.size > 1) {
+                        var expanded by remember { mutableStateOf(false) }
+                        Box {
+                            OutlinedButton(onClick = { expanded = true }) {
+                                Icon(
+                                    Icons.Default.ArrowDropDown,
+                                    modifier = Modifier.size(ButtonDefaults.IconSize),
+                                    contentDescription = null
+                                )
+                                Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
+                                Text("Change bank app")
+                            }
+                            DropdownMenu(
+                                expanded = expanded,
+                                onDismissRequest = { expanded = false }
+                            ) {
+                                supportedBankApps.forEach { bankApp ->
+                                    DropdownMenuItem(onClick = {
+                                        selectedBankApp = bankApp
+                                        expanded = false
+                                    }) {
+                                        Icon(
+                                            painter = rememberDrawablePainter(bankApp.icon),
+                                            contentDescription = null,
+                                            modifier = Modifier.size(ButtonDefaults.IconSize),
+                                            tint = Color.Unspecified
+                                        )
+                                        Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
+                                        Text(bankApp.name)
+                                    }
+                                }
+                            }
                         }
-                        Text("Pay via bank app")
                     }
                 } else {
                     Text("No bank app supporting SPAYD found")
